@@ -1,5 +1,5 @@
 # flutter_application
-Food Delivery App
+Food Delivery Mobile App
 
 ## Getting Started
 
