@@ -1,7 +1,7 @@
 # flutter_application
 Food Delivery Mobile App
 
-## Getting Started
+## Getting Starte
 
 This project is a starting point for a Flutter application.
 
