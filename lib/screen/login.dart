@@ -140,10 +140,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     Center(
                       child: SizedBox(
                         width: double.infinity,
+                        
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             shape: const RoundedRectangleBorder(
+                              
                               borderRadius:
                                   BorderRadius.all(Radius.circular(2)),
                             ),
@@ -164,6 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 18.0),
                             child: const Text('Login'),
+                            
                           ),
                         ),
                       ),
