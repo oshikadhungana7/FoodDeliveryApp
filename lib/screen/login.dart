@@ -61,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 decoration: BoxDecoration(
                     image: const DecorationImage(
                         fit: BoxFit.cover,
-                        image: AssetImage("assets/images/cd.jpeg"))),
+                        image: AssetImage("assets/images/food.jpeg"))),
               ),
               Padding(
                 padding: const EdgeInsets.all(15.0),
