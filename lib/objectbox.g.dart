@@ -20,39 +20,45 @@ export 'package:objectbox/objectbox.dart'; // so that callers only have to impor
 
 final _entities = <ModelEntity>[
   ModelEntity(
-      id: const IdUid(1, 50399827235375717),
+      id: const IdUid(1, 7124425040205196770),
       name: 'User',
-      lastPropertyId: const IdUid(6, 3057335196818046296),
+      lastPropertyId: const IdUid(7, 8385734934802449891),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 3109667530162340713),
+            id: const IdUid(1, 6969218695773727501),
             name: 'uId',
             type: 6,
             flags: 129),
         ModelProperty(
-            id: const IdUid(2, 3034788229787055001),
+            id: const IdUid(2, 550519771983060131),
+            name: 'userID',
+            type: 9,
+            flags: 2080,
+            indexId: const IdUid(1, 9119495144069814924)),
+        ModelProperty(
+            id: const IdUid(3, 2504566229051805384),
             name: 'fname',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(3, 7615241805941845305),
+            id: const IdUid(4, 8803106067915157282),
             name: 'lname',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(4, 3073669142742050000),
+            id: const IdUid(5, 8608503929635949315),
             name: 'email',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(5, 1802761978958793933),
+            id: const IdUid(6, 8589468842809361697),
             name: 'password',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(6, 3057335196818046296),
-            name: 'gender',
+            id: const IdUid(7, 8385734934802449891),
+            name: 'image',
             type: 9,
             flags: 0)
       ],
@@ -80,8 +86,8 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(1, 50399827235375717),
-      lastIndexId: const IdUid(0, 0),
+      lastEntityId: const IdUid(1, 7124425040205196770),
+      lastIndexId: const IdUid(1, 9119495144069814924),
       lastRelationId: const IdUid(0, 0),
       lastSequenceId: const IdUid(0, 0),
       retiredEntityUids: const [],
@@ -102,18 +108,27 @@ ModelDefinition getObjectBoxModel() {
           object.uId = id;
         },
         objectToFB: (User object, fb.Builder fbb) {
-          final fnameOffset = fbb.writeString(object.fname);
-          final lnameOffset = fbb.writeString(object.lname);
-          final emailOffset = fbb.writeString(object.email);
-          final passwordOffset = fbb.writeString(object.password);
-          final genderOffset = fbb.writeString(object.gender);
-          fbb.startTable(7);
+          final userIDOffset =
+              object.userID == null ? null : fbb.writeString(object.userID!);
+          final fnameOffset =
+              object.fname == null ? null : fbb.writeString(object.fname!);
+          final lnameOffset =
+              object.lname == null ? null : fbb.writeString(object.lname!);
+          final emailOffset =
+              object.email == null ? null : fbb.writeString(object.email!);
+          final passwordOffset = object.password == null
+              ? null
+              : fbb.writeString(object.password!);
+          final imageOffset =
+              object.image == null ? null : fbb.writeString(object.image!);
+          fbb.startTable(8);
           fbb.addInt64(0, object.uId);
-          fbb.addOffset(1, fnameOffset);
-          fbb.addOffset(2, lnameOffset);
-          fbb.addOffset(3, emailOffset);
-          fbb.addOffset(4, passwordOffset);
-          fbb.addOffset(5, genderOffset);
+          fbb.addOffset(1, userIDOffset);
+          fbb.addOffset(2, fnameOffset);
+          fbb.addOffset(3, lnameOffset);
+          fbb.addOffset(4, emailOffset);
+          fbb.addOffset(5, passwordOffset);
+          fbb.addOffset(6, imageOffset);
           fbb.finish(fbb.endTable());
           return object.uId;
         },
@@ -122,16 +137,18 @@ ModelDefinition getObjectBoxModel() {
           final rootOffset = buffer.derefObject(0);
 
           final object = User(
-              const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 6, ''),
-              const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 8, ''),
-              const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 14, ''),
-              const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 10, ''),
-              const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 12, ''),
+              userID: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 6),
+              fname: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 8),
+              lname: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 10),
+              email: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 12),
+              image: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 16),
+              password: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 14),
               uId: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0));
 
           return object;
@@ -146,18 +163,21 @@ class User_ {
   /// see [User.uId]
   static final uId = QueryIntegerProperty<User>(_entities[0].properties[0]);
 
+  /// see [User.userID]
+  static final userID = QueryStringProperty<User>(_entities[0].properties[1]);
+
   /// see [User.fname]
-  static final fname = QueryStringProperty<User>(_entities[0].properties[1]);
+  static final fname = QueryStringProperty<User>(_entities[0].properties[2]);
 
   /// see [User.lname]
-  static final lname = QueryStringProperty<User>(_entities[0].properties[2]);
+  static final lname = QueryStringProperty<User>(_entities[0].properties[3]);
 
   /// see [User.email]
-  static final email = QueryStringProperty<User>(_entities[0].properties[3]);
+  static final email = QueryStringProperty<User>(_entities[0].properties[4]);
 
   /// see [User.password]
-  static final password = QueryStringProperty<User>(_entities[0].properties[4]);
+  static final password = QueryStringProperty<User>(_entities[0].properties[5]);
 
-  /// see [User.gender]
-  static final gender = QueryStringProperty<User>(_entities[0].properties[5]);
+  /// see [User.image]
+  static final image = QueryStringProperty<User>(_entities[0].properties[6]);
 }

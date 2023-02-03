@@ -1,7 +1,7 @@
 import 'package:plants/app/theme.dart';
-import 'package:plants/screen/dashboard.dart';
 import 'package:flutter/material.dart';
 
+import '../screen/dashboard.dart';
 import '../screen/login.dart';
 import '../screen/register.dart';
 
@@ -16,9 +16,13 @@ class MyApp extends StatelessWidget {
       theme: getApplicationThemeData(),
       initialRoute: '/',
       routes: {
-        '/': (context) => const LoginScreen(),
-        '/registerScreen': (context) => const Register(),
-        '/dashboardScreen': (context) => const DashboardScreen(),
+        '/login': (context) => const LoginScreen(),
+        '/registerScreen': (context) => const RegisterScreen(),
+        // '/registerScreen': (context) => const Register(),
+        // '/registerScreen': (context) => const Register(),
+         '/dashboardScreen': (context) => const DashboardScreen(),
+                '/': (context) => const  LoginScreen(),
+
       },
     );
   }

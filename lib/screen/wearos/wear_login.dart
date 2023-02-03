@@ -1,53 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:motion_toast/motion_toast.dart';
+import 'package:plants/repository/user_repo.dart';
 
-import 'package:plants/screen/forgetpassword.dart';
-import 'package:plants/screen/register.dart';
+import 'package:plants/screen/dashboard.dart';
+import 'package:wear/wear.dart';
 
-import '../app/snackbar.dart';
-import '../repository/user_repo.dart';
-import 'dashboard.dart';
+import '../../model/user.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class LoginScreenWear extends StatefulWidget {
+  const LoginScreenWear({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<LoginScreenWear> createState() => _LoginScreenWearState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenWearState extends State<LoginScreenWear> {
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
 
   
-loginUser() async {
-  final islogin = await UserRepositoryImpl()
-        .loginUser(_usernameController.text, _passwordController.text);
-    if (islogin) {
-      // write here
-      _goToAnotherPage();
+  // loginUser() async {
+  //   User? status = await UserRepositoryImpl()
+  //       .loginUser(_usernameController.text, _passwordController.text);
+  //   _showMessage(status!.uId);
+  // }
+
+  _showMessage(int status) {
+    if (status > 0) {
+      MotionToast.success(
+        description: const Text('Logged in successfully'),
+      ).show(context);
     } else {
-      _showMessage();
+      MotionToast.success(
+        description: const Text('Error to login'),
+      ).show(context);
     }
-}
-
-_goToAnotherPage() {
-    Navigator.pushNamed(context, '/dashboardScreen');
-  }
-
-  _showMessage() {
-    showSnackbar(context, 'Invalid username or password', Colors.red);
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login'),
-        backgroundColor: const Color.fromARGB(255, 231, 136, 136),
-        centerTitle: true,
-      ),
-      // backgroundColor: Color(0xffD3D3D),
-      body: SafeArea(
+    return WatchShape(
+      builder: (BuildContext context, WearShape shape, Widget? child){
+        return AmbientMode(builder: (context,mode,child){
+        return Scaffold(
+          body: SafeArea(
         child: SingleChildScrollView(
             child: Form(
           key: _formKey,
@@ -55,30 +51,16 @@ _goToAnotherPage() {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                height: 200,
+            
                 width: double.infinity,
                 // ignore: prefer_const_constructors
-                decoration: BoxDecoration(
-                    image: const DecorationImage(
-                        fit: BoxFit.cover,
-                        image: AssetImage("assets/images/food.jpeg"))),
+               
               ),
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+               Column(
+                
                   children: [
                     //     child: Image.asset("assets/images/a.jpeg")),
-                    const Center(
-                      child: Padding(
-                        padding: EdgeInsets.all(25.0),
-                        child: Text(
-                          "Welcome",
-                          style: TextStyle(
-                              fontSize: 28, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
+                 
                     TextFormField(
                       decoration: InputDecoration(
                           labelText: 'Email',
@@ -107,11 +89,9 @@ _goToAnotherPage() {
                       },
                     ),
                     // ignore: prefer_const_constructors
-                    SizedBox(
-                      height: 15,
-                    ),
+                  
                     TextFormField(
-                      decoration:InputDecoration(
+                      decoration: InputDecoration(
                           labelText: 'Password',
                           hintText: 'Enter Password',
                           enabledBorder: OutlineInputBorder(
@@ -123,15 +103,17 @@ _goToAnotherPage() {
                             borderRadius: BorderRadius.circular(5),
                           )),
                       validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter Password';
+                        }
+                        if (value.length < 6) {
+                          return 'Password length must be at least 6 characters';
+                        }
 
-                        
                         return null;
                       },
                     ),
-                    // ignore: prefer_const_constructors
-                    SizedBox(
-                      height: 15,
-                    ),
+        
                     Center(
                       child: SizedBox(
                         width: double.infinity,
@@ -155,7 +137,6 @@ _goToAnotherPage() {
                                       builder: (context) =>
                                           const DashboardScreen()));
                             }
-                            loginUser();
                           },
                           // ignore: prefer_const_constructors
                           child: Padding(
@@ -168,53 +149,28 @@ _goToAnotherPage() {
                       ),
                     ),
                     // ignore: prefer_const_constructors
-                    SizedBox(
-                      height: 15,
-                    ),
+                 
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text('Dont have Account?'),
-                        InkWell(
-                            onTap: () => {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => const RegisterScreen()),
-                                  )
-                                },
-                            // ignore: prefer_const_constructors
-                            child: Text(
-                              ' Register here',
-                              style: const TextStyle(
-                                color: Color.fromARGB(255, 188, 109, 109),
-                              ),
-                            ))
+                    
                       ],
                     ),
                     // ignore: prefer_const_constructors
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Center(
-                        child: InkWell(
-                            onTap: () => {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const Forgetpwd()),
-                                  )
-                                },
-                            child: const Text('Forgot Password?'))),
+                
+                   
                   ],
                 ),
               )
-            ],
+        
           ),
-        )),
-      ),
+        ));
+      
+
+         
+        });
+      },
+    
+      // backgroundColor: Color(0xffD3D3D),
+     
     );
   }
 }

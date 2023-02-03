@@ -21,7 +21,7 @@ class ObjectBoxInstance {
     var dir = await getApplicationDocumentsDirectory();
     final store = Store(
       getObjectBoxModel(),
-      directory: '${dir.path}/user_choices',
+      directory: '${dir.path}/Delivery',
     );
     return ObjectBoxInstance(store);
   }
